@@ -1,6 +1,6 @@
 <template>
   <div>
-    <div class="text-h5 text-center">República</div>
+    <div class="text-h5 text-center"><img src="../assets/Logo-Completo.png" alt=""></div>
     <nav>
       <q-list>
         <div v-for="menu in menus" :key="menu.label" class="list">
