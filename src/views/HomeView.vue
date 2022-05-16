@@ -4,7 +4,7 @@
   <main>
     <div class="fit row wrap justify-between items-start content-start">
       <div class="col-8">
-        <q-card class="q-pr-lg q-pl-lg q-pt-lg q-pb-md">
+        <q-card class="q-pr-lg q-pl-lg q-pt-lg q-pb-md shadow-1">
           <q-card-section>
             <p class="text-h6">Resumo</p>
             <div class="fit row wrap justify-start items-start content-start">
@@ -45,7 +45,7 @@
         </q-card>
       </div>
       <div class="col-4 q-pl-md">
-        <q-card class="col-4">
+        <q-card class="col-4 shadow-1">
           <q-card-section>
             <p class="text-h6">Add Despesa</p>
             <AddOutlayComponent />
@@ -53,7 +53,7 @@
         </q-card>
       </div>
       <div class="col-8 q-pt-md">
-        <q-card class="col-8">
+        <q-card class="col-8 shadow-1">
           <q-card-section class="fit row justify-between align-center">
             <p class="text-h6">Transações recentes</p>
             <div  class="cursor-pointer">
