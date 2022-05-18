@@ -1,25 +1,27 @@
 <template>
   <q-layout view="lHh lpR lFf">
-    <q-header class="bg-white text-dark">
-      <q-toolbar>
-        <q-btn dense flat round icon="menu" @click="toggleLeftDrawer" />
+    <span v-if="isLogged">
+      <q-header class="bg-white text-dark">
+        <q-toolbar>
+          <q-btn dense flat round icon="menu" @click="toggleLeftDrawer" />
 
-        <q-toolbar-title>
-          {{ $route.name }}
-        </q-toolbar-title>
-      </q-toolbar>
-    </q-header>
+          <q-toolbar-title>
+            {{ $route.name }}
+          </q-toolbar-title>
+        </q-toolbar>
+      </q-header>
 
-    <q-drawer
-      show-if-above
-      v-model="leftDrawerOpen"
-      side="left"
-      behavior="desktop"
-      bordered
-    >
-      <!-- drawer content -->
-      <Nav />
-    </q-drawer>
+      <q-drawer
+        show-if-above
+        v-model="leftDrawerOpen"
+        side="left"
+        behavior="desktop"
+        bordered
+      >
+        <!-- drawer content -->
+        <Nav />
+      </q-drawer>
+    </span>
 
     <q-page-container>
       <q-page padding>
@@ -39,12 +41,16 @@ export default {
   },
   setup() {
     const leftDrawerOpen = ref(false);
+    const isLogged = true;
+
+    function toggleLeftDrawer() {
+      leftDrawerOpen.value = !leftDrawerOpen.value;
+    }
 
     return {
       leftDrawerOpen,
-      toggleLeftDrawer() {
-        leftDrawerOpen.value = !leftDrawerOpen.value;
-      },
+      isLogged,
+      toggleLeftDrawer,
     };
   },
 };
