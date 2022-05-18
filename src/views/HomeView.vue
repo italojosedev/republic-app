@@ -1,13 +1,11 @@
-
-
 <template>
   <main>
-    <div class="fit row wrap justify-between items-start content-start">
-      <div class="col-8">
-        <q-card class="q-pr-lg q-pl-lg q-pt-lg q-pb-md shadow-1">
+    <div class="fit row wrap justify-between items-start content-start estilo_layout">
+      <div class="col-8 ">
+        <q-card class="q-pr-lg q-pl-lg q-pt-lg q-pb-md shadow-1 estilo_resumo">
           <q-card-section>
             <p class="text-h6 text-h6-add">Resumo</p>
-            <div class="fit row wrap justify-start items-start content-start">
+            <div class="fit row wrap justify-start items-start content-start tam_font">
               <div class="col-3">
                 <CardComponent
                   v-bind:label="'Fixo'"
@@ -44,8 +42,8 @@
           </q-card-section>
         </q-card>
       </div>
-      <div class="col-4 q-pl-md">
-        <q-card class="col-4 shadow-1">
+      <div class="col-4 q-pl-md coluna_despesas">
+        <q-card class="col-4 shadow-1 estilo_add_despesas">
           <q-card-section>
             <p class="text-h6 text-h6-add">Add Despesa</p>
             <AddOutlayComponent />
@@ -53,8 +51,8 @@
         </q-card>
       </div>
       <div class="col-8 q-pt-md">
-        <q-card class="col-8 shadow-1">
-          <q-card-section class="fit row justify-between align-center">
+        <q-card class="col-8 shadow-1 estilo_trans_recentes ">
+          <q-card-section class="fit row justify-between align-center posicionamento_trans_recentes">
             <p class="text-h6 text-h6-add">Transações recentes</p>
             <div  class="cursor-pointer">
               <p class="text-subtitle1">
@@ -82,15 +80,14 @@ export default {
 
 <style>
   .estilo_layout {
-      display: flex;
+      display: flex !important;
       flex-direction: row;
-      flex-wrap: wrap;
-      justify-content: space-between;
-      align-items: center;
+      flex-wrap: wrap !important;
+      justify-content: space-between !important;
+      align-items: center !important;
   }
 
   .estilo_resumo {
-      margin-top: 50px;
       width: 100% !important;
       height: 238px !important;
       display: flex;
@@ -98,6 +95,9 @@ export default {
       justify-content: center;
   }
 
+  .tam_font {
+    font-size: 20px;
+  }
   .estilo_col_8 {
       display: flex;
       justify-content: center;
@@ -128,8 +128,12 @@ export default {
     width: auto !important;
     height: 280px !important;
     background: #FFFFFF !important;
-    border: 1px solid #000000 !important;
-    box-shadow: 0px 20px 110px -30px rgb(43 37 37 / 12%) !important;
     border-radius: 14px !important;
   }
+
+  .posicionamento_trans_recentes {
+    display: flex !important;
+    flex-direction: row !important;
+    align-items: baseline !important;
+}
 </style>
