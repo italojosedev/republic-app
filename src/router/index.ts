@@ -41,7 +41,7 @@ const router = createRouter({
 })
 
 router.beforeEach((to, from, next) => {
-  let isLogged = true;
+  let isLogged = false;
 
   if (isLogged && to.name !== 'login') next();
   if (!isLogged && to.name === 'login') next();
