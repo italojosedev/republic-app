@@ -1,6 +1,6 @@
 <template>
-  <div class="root">
-    <div class="text-h4"><img src="../assets/Logo-Completo.png" alt=""></div>
+  <div class="root-register ">
+    <div class="text-h4-register"><img src="../assets/Logo-Completo.png" alt=""></div>
     <q-card style="min-width: 300px">
       <q-card-section>
         <div class="text-h5 txt-Login">Login</div>
@@ -39,7 +39,7 @@ export default {
 </script>
 <style>
 @media (min-width: 1024px) {
-   .root {
+   .root-register {
     display: flex;
     flex-direction: column;
     align-items: center;
@@ -49,7 +49,7 @@ export default {
     height: 100%;
   }
 
-  .text-h4 {
+  .text-h4-register {
       display: flex !important;
       justify-content: center;
       margin-bottom: 40px;
