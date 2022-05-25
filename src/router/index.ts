@@ -4,6 +4,8 @@ import UsersView from '../views/UsersView.vue'
 import LoginView from '../views/LoginView.vue'
 import UserView from '../views/UserView.vue'
 import RegisterView from '../views/RegisterView.vue'
+import WelcomeView from '../views/WelcomeView.vue'
+import TermsAndConditions from '../views/TermsAndConditions.vue'
 import { nextTick } from 'vue'
 
 const router = createRouter({
@@ -14,6 +16,17 @@ const router = createRouter({
       name: 'login',
       component: LoginView
     },
+    {
+      path: '/WelcomeView',
+      name: 'WelcomeView',
+      component: WelcomeView
+    },
+    {
+      path: '/TermsAndConditions',
+      name: 'TermsAndConditions',
+      component: TermsAndConditions
+    },
+    
     {
       path: '/registro',
       name: 'registro',
@@ -48,7 +61,7 @@ const router = createRouter({
 
 router.beforeEach((to, from, next) => {
   let isLogged = false;
-  const routesFree = ['login', 'registro'];
+  const routesFree = ['login', 'registro','TermsAndConditions'];
 
   if (isLogged && to.name !== 'login') next();
   if (!isLogged && routesFree.includes(to?.name || 'login')) next();
