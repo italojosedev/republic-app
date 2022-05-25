@@ -8,6 +8,7 @@ import WelcomeView from '../views/WelcomeView.vue'
 import TermsAndConditions from '../views/TermsAndConditions.vue'
 import { nextTick } from 'vue'
 
+
 const router = createRouter({
   history: createWebHistory(import.meta.env.BASE_URL),
   routes: [
@@ -61,7 +62,7 @@ const router = createRouter({
 
 router.beforeEach((to, from, next) => {
   let isLogged = false;
-  const routesFree = ['login', 'registro','TermsAndConditions'];
+  const routesFree = ['login', 'registro','TermsAndConditions','Welcome'];
 
   if (isLogged && to.name !== 'login') next();
   if (!isLogged && routesFree.includes(to?.name || 'login')) next();
