@@ -1,7 +1,7 @@
 <template>
   <div class="root">
     <div class="text-h4"><img src="../assets/Logo-Completo.png" alt="" /></div>
-    <q-card>
+    <q-card class="tamanho-login">
       <q-card-section class="">
         <div class="text-h5 txt-Login">Login</div>
         <q-input
@@ -21,8 +21,8 @@
           class="estilo-input"
           @focus="clearErrorLogin"
         />
-        <span v-if="state.showErrorLogin" class="erro"
-          >Senha ou email incompleto!</span
+        <span v-if="state.showErrorLogin" class="erroLogin"
+          >Senha ou email incorreto!</span
         >
         <q-btn
           key="btn_size_round_lg"
@@ -34,9 +34,9 @@
           @click="submitLogin"
         />
         <div class="text-subtitle1">Esqueceu a senha?</div>
-        <div class="text-subtitle2 text-weight-bold">
-          Criar uma nova república
-        </div>
+        <router-link to="/register" class="text-subtitle2 text-weight-bold"
+          >Criar uma nova república</router-link
+        >
       </q-card-section>
 
       <q-separator inset />
@@ -47,6 +47,8 @@
 <script lang="ts">
 import { reactive, ref } from "vue";
 import axios from "axios";
+import { Login } from "../services/loginService.ts";
+import type { UserLogin } from "../types/userTypes.ts";
 export default {
   setup() {
     const state = reactive({
@@ -56,18 +58,22 @@ export default {
     });
     async function submitLogin() {
       validate();
-      const data = {
+      const data: UserLogin = {
         email: state.email,
         password: state.password,
       };
-      const response = await axios.post(
-        "http://localhost:3333/api/signin",
-        data
-      );
+      const response = await Login(data);
       console.log(response);
     }
+
     function validate() {
-      if (state.password.length < 8) {
+      if (
+        state.password.length < 8 ||
+        state.password.length > 16 ||
+        state.email == "" ||
+        state.email.indexOf("@") == -1 ||
+        state.email.indexOf(".") == -1
+      ) {
         state.showErrorLogin = true;
       }
     }
@@ -85,8 +91,9 @@ export default {
 
 <style>
 @media (min-width: 450px) {
-  .q-card > div {
-    height: 100%;
+  .tamanho-login {
+    width: 428px !important;
+    height: 550px !important;
   }
   .text-h4 {
     display: flex !important;
@@ -119,7 +126,7 @@ export default {
   .estilo-btn {
     width: 282px !important;
     height: 60px !important;
-    margin-top: 45px;
+    margin-top: 14px;
   }
   .text-subtitle1 {
     width: 130px;
@@ -145,6 +152,7 @@ export default {
     margin: 20px;
     text-align: center;
     font-size: 15px !important;
+    text-decoration: none;
   }
   .root {
     display: flex;
@@ -152,7 +160,7 @@ export default {
     align-items: center;
     margin-top: 100px;
   }
-  .erro {
+  .erroLogin {
     color: red;
   }
 }
