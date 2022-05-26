@@ -29,7 +29,7 @@ const router = createRouter({
     },
     
     {
-      path: '/registro',
+      path: '/register',
       name: 'registro',
       component: RegisterView
     },
@@ -62,7 +62,7 @@ const router = createRouter({
 
 router.beforeEach((to, from, next) => {
   let isLogged = false;
-  const routesFree = ['login', 'registro','TermsAndConditions','Welcome'];
+  const routesFree = ['login', 'registro','TermsAndConditions','WelcomeView'];
 
   if (isLogged && to.name !== 'login') next();
   if (!isLogged && routesFree.includes(to?.name || 'login')) next();

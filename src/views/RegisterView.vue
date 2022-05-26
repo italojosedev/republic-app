@@ -1,151 +1,254 @@
 <template>
   <div class="root">
-    <div class="text-h4"><img src="../assets/Logo-Completo.png" alt=""></div>
-    <q-card style="min-width: 300px">
+    <div class="text-h4"><img src="../assets/Logo-Completo.png" alt="" /></div>
+    <q-card>
       <q-card-section>
         <div class="text-h5 txt-Login">Registro</div>
-      <div class="container-a">
-        <div class="bloco-form">
-          <q-input class="style-input" outlined v-model="text" label="Nome da Republica" />
-             <q-input class="style-input" outlined v-model="text" label="Descrição" />
-               <q-input class="style-input" outlined v-model="text" label="Email" />
-                  <q-input class="style-input" outlined v-model="text" label="Senha" />
-            </div>
-           <div class="bloco-b"> </div>
-         <div class="bloco-form">
-          <q-input class="style-input" outlined v-model="text" label="Primeiro Nome" />
-            <q-input class="style-input" outlined v-model="text" label="Sobrenome" />
-              <q-input class="style-input" outlined v-model="text" label="Telefone" />
-           </div>
+        <div class="container-a">
+          <div class="bloco-form">
+            <q-input
+              class="style-input"
+              outlined
+              v-model="state.republicName"
+              label="Nome da Republica"
+              @focus="clearErrorRegister"
+            />
+            <q-input
+              class="style-input"
+              outlined
+              v-model="state.description"
+              label="Descrição"
+              @focus="clearErrorRegister"
+            />
+            <q-input
+              type="email"
+              name="email"
+              class="style-input"
+              outlined
+              v-model="state.email"
+              label="Email"
+              @focus="clearErrorRegister"
+            />
+            <q-input
+              type="password"
+              class="style-input"
+              outlined
+              v-model="state.password"
+              label="Senha"
+              @focus="clearErrorRegister"
+            />
+          </div>
+          <div class="bloco-b"></div>
+          <div class="bloco-form">
+            <q-input
+              class="style-input"
+              outlined
+              v-model="state.firstName"
+              label="Primeiro Nome"
+              @focus="clearErrorRegister"
+            />
+            <q-input
+              class="style-input"
+              outlined
+              v-model="state.lastName"
+              label="Sobrenome"
+              @focus="clearErrorRegister"
+            />
+            <q-input
+              type="tel"
+              class="style-input"
+              outlined
+              mask="(##) ##### - ####"
+              v-model="state.phofe"
+              label="Telefone"
+              @focus="clearErrorRegister"
+            />
+            <span v-if="state.showErrorRegister" class="erroRegister"
+              >Verifique os Dados!</span
+            >
+          </div>
         </div>
-       <div class="container-b">
+        <div class="container-b">
           <div class="style-cad">
             <q-btn
-            key="btn_size_round_lg"
-            rounded
-            color="primary"
-            size=""
-            label="Cadastro"
-            class="estilo-btn"
-            
-          />
+              key="btn_size_round_lg"
+              rounded
+              color="primary"
+              size=""
+              label="Cadastro"
+              class="estilo-btn"
+              @click="submitRegister"
+            />
           </div>
-         <div class="style-log"> Login </div>
-      </div>
+          <router-link to="/login" class="style-log">Login</router-link>
+        </div>
       </q-card-section>
-               
       <q-separator inset />
     </q-card>
   </div>
 </template>
 <script lang="ts">
-import { ref } from "vue";
+import { reactive, ref } from "vue";
+import axios from "axios";
+import { register } from "@/services/registerService";
 export default {
   setup() {
-    const email = ref("");
-    const password = ref("");
-
+    const state = reactive({
+      republicName: "",
+      description: "",
+      firstName: "",
+      lastName: "",
+      phofe: "",
+      email: "",
+      password: "",
+      showErrorRegister: false,
+    });
+    async function submitRegister() {
+      validateRegister();
+      const data = {
+        republic: {
+          name: state.republicName,
+          description: state.description,
+        },
+        user: {
+          firstName: state.firstName,
+          lastName: state.lastName,
+          email: state.email,
+          phone: state.phofe,
+          password: state.password,
+        },
+      };
+      const response = await register(data);
+      console.log(response);
+    }
+    function validateRegister() {
+      if (
+        state.password.length < 8 ||
+        state.password.length > 16 ||
+        state.republicName == "" ||
+        state.description == "" ||
+        state.firstName == "" ||
+        state.lastName == "" ||
+        state.email == "" ||
+        state.email.indexOf("@") == -1 ||
+        state.email.indexOf(".") == -1
+      ) {
+        state.showErrorRegister = true;
+      }
+    }
+    function clearErrorRegister() {
+      state.showErrorRegister = false;
+    }
     return {
-      password,
-      email,
+      state,
+      submitRegister,
+      clearErrorRegister,
     };
   },
 };
 </script>
 <style>
 /*@media (min-width: 1024px) {*/
-.style-cad{
-  color: #FFFFFF;
+.style-cad {
+  color: #ffffff;
 }
-.style-log{
-   font-size: 15px;
-    margin: 19px;
-    color: #0177FB;
+.style-log {
+  width: 179px;
+  height: 19px;
+  font-family: "Lato";
+  font-style: normal;
+  font-weight: 800;
+  font-size: 16px;
+  line-height: 19px;
+  color: #0177fb;
+  margin: 20px;
+  text-align: center;
+  font-size: 15px !important;
+  text-decoration: none;
+}
+.style-input {
+  margin: 0px 60px 35px 60px;
+  width: 290px !important;
+  height: 45px !important;
+}
 
-   }
-  .style-input{  
-    margin: 0px 60px 35px 60px;
-    width: 290px !important;
-    height: 45px !important;
-   }
- 
-    
-  .bloco-form{
-  
-    width: 300px;
-    height: 290px;
-    display: flex;
-    flex-direction: column;
-    align-items: center; 
-  }
- .bloco-b{
-    border: 1px solid #AAB4C1;
-    width: 1px;
-    height: 259px;
-    margin: 5px 20px 3px 20px;
-  }
+.bloco-form {
+  width: 300px;
+  height: 290px;
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+}
+.bloco-b {
+  border: 1px solid #aab4c1;
+  width: 1px;
+  height: 259px;
+  margin: 5px 20px 3px 20px;
+}
 
-   .container-a{
-     display: flex;
-     flex-direction: row;
-     width: 700px;
-     height: 289px;
-     justify-content: center;
-   }
-   .container-b{
-     display: flex;
-     flex-direction: column;
-     width: 700px;
-     height: 160px;
-     align-items: center;
-     
-   }
+.container-a {
+  display: flex;
+  flex-direction: row;
+  width: 700px;
+  height: 289px;
+  justify-content: center;
+}
+.container-b {
+  display: flex;
+  flex-direction: column;
+  width: 700px;
+  height: 160px;
+  align-items: center;
+  margin-top: 30px;
+}
 
-   .root {
-    display: flex;
-    flex-direction: column;
-    align-items: center;
-    margin-top: 100px;
-    
-  }
-  .q-card > div{
-    height: 100%;
-  }
+.root {
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  margin-top: 100px;
+}
+.q-card > div {
+  height: 100%;
+}
 
- .style-bot{
-    width: 282px !important;
-    height: 60px !important;
-    margin-top: 45px;
-  }
-  .text-h4 {
-      display: flex !important;
-      justify-content: center;
-      margin-bottom: 40px;
-  }
-  .q-card > div  {
-    display: flex;
-    align-items: center;
-    flex-direction: column;
-  }
-  .q-card {
-      width: 948px;
-      height: 630px;
-      background: #FFFFFF;
-      border: 1px solid rgba(0, 0, 0, 0.1);
-      box-shadow: 10px 4px 4px rgb(0 0 0 / 25%);
-      border-radius: 10px !important ; 
-      position: relative;
-      padding: 10px;
-      flex-direction: row;
-  }
+.style-bot {
+  width: 282px !important;
+  height: 60px !important;
+  margin-top: 45px;
+}
+.text-h4 {
+  display: flex !important;
+  justify-content: center;
+  margin-bottom: 40px;
+}
+.q-card > div {
+  display: flex;
+  align-items: center;
+  flex-direction: column;
+}
+.q-card {
+  width: 948px;
+  height: 630px;
+  background: #ffffff;
+  border: 1px solid rgba(0, 0, 0, 0.1);
+  box-shadow: 10px 4px 4px rgb(0 0 0 / 25%);
+  border-radius: 10px !important ;
+  position: relative;
+  padding: 10px;
+  flex-direction: row;
+}
 
-  .txt-Login {  
-    display: flex;
-    justify-content: center;
-    margin: 45px;
-  }
-
-  
-  
-
+.txt-Login {
+  display: flex;
+  justify-content: center;
+  margin: 45px;
+}
+.erroRegister {
+  color: red;
+  font-size: 15px;
+  display: flex;
+  flex-direction: row-reverse;
+  align-content: stretch;
+}
 </style>
