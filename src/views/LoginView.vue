@@ -1,12 +1,13 @@
 <template>
   <div class="root">
     <div class="text-h4"><img src="../assets/Logo-Completo.png" alt="" /></div>
-    <q-card>
+    <q-card class="tamanho-login">
       <q-card-section class="">
         <div class="text-h5 txt-Login">Login</div>
         <q-input
           type="email"
           name="email"
+          :rules="[(val) => val.length > 0 || 'Campo Vazio']"
           outlined
           v-model="state.email"
           label="Email"
@@ -16,14 +17,17 @@
         <q-input
           type="password"
           outlined
+          mask="################"
+          :rules="[(val) => val.length >= 8 || 'Mínimo 8 caracteres']"
           v-model="state.password"
           label="Senha"
           class="estilo-input"
           @focus="clearErrorLogin"
         />
-        <span v-if="state.showErrorLogin" class="erro"
-          >Senha ou email incompleto!</span
+        <span v-if="state.showErrorLogin" class="erroLogin"
+          >Senha ou Email Incorreto!</span
         >
+        <span class="erroLogin" v-html="state.result"></span>
         <q-btn
           key="btn_size_round_lg"
           rounded
@@ -34,9 +38,9 @@
           @click="submitLogin"
         />
         <div class="text-subtitle1">Esqueceu a senha?</div>
-        <div class="text-subtitle2 text-weight-bold">
-          Criar uma nova república
-        </div>
+        <router-link to="/register" class="text-subtitle2 text-weight-bold"
+          >Criar uma nova república</router-link
+        >
       </q-card-section>
 
       <q-separator inset />
@@ -47,32 +51,41 @@
 <script lang="ts">
 import { reactive, ref } from "vue";
 import axios from "axios";
+import { Login } from "../services/loginService.ts";
+import type { UserLogin } from "../types/userTypes.ts";
 export default {
   setup() {
     const state = reactive({
       email: "",
       password: "",
       showErrorLogin: false,
+      result: "",
     });
     async function submitLogin() {
       validate();
-      const data = {
+      const data: UserLogin = {
         email: state.email,
         password: state.password,
       };
-      const response = await axios.post(
-        "http://localhost:3333/api/signin",
-        data
-      );
-      console.log(response);
+      const response = await Login(data);
+      state.result = response.message;
+      console.log(state.result);
     }
+
     function validate() {
-      if (state.password.length < 8) {
+      if (
+        state.password.length < 8 ||
+        state.password.length > 16 ||
+        state.email == "" ||
+        state.email.indexOf("@") == -1 ||
+        state.email.indexOf(".") == -1
+      ) {
         state.showErrorLogin = true;
       }
     }
     function clearErrorLogin() {
       state.showErrorLogin = false;
+      state.result = "";
     }
     return {
       state,
@@ -83,10 +96,11 @@ export default {
 };
 </script>
 
-<style>
+<style scoped>
 @media (min-width: 450px) {
-  .q-card > div {
-    height: 100%;
+  .tamanho-login {
+    width: 428px !important;
+    height: auto !important;
   }
   .text-h4 {
     display: flex !important;
@@ -112,14 +126,14 @@ export default {
     margin: 45px;
   }
   .estilo-input {
-    margin: 0px 60px 35px 60px;
-    width: 290px;
-    height: 46px;
+    width: 80%;
+    height: auto;
+    margin-bottom: 20px;
   }
   .estilo-btn {
-    width: 282px !important;
+    width: 80% !important;
     height: 60px !important;
-    margin-top: 45px;
+    margin-top: 14px;
   }
   .text-subtitle1 {
     width: 130px;
@@ -145,6 +159,7 @@ export default {
     margin: 20px;
     text-align: center;
     font-size: 15px !important;
+    text-decoration: none;
   }
   .root {
     display: flex;
@@ -152,7 +167,7 @@ export default {
     align-items: center;
     margin-top: 100px;
   }
-  .erro {
+  .erroLogin {
     color: red;
   }
 }

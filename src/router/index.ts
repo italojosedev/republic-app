@@ -4,8 +4,10 @@ import UsersView from '../views/UsersView.vue'
 import LoginView from '../views/LoginView.vue'
 import UserView from '../views/UserView.vue'
 import RegisterView from '../views/RegisterView.vue'
+import WelcomeView from '../views/WelcomeView.vue'
+import TermsAndConditions from '../views/TermsAndConditions.vue'
 import { nextTick } from 'vue'
-
+import WelcomeViewVue from '@/views/WelcomeView.vue'
 const router = createRouter({
   history: createWebHistory(import.meta.env.BASE_URL),
   routes: [
@@ -15,7 +17,18 @@ const router = createRouter({
       component: LoginView
     },
     {
-      path: '/registro',
+      path: '/WelcomeView',
+      name: 'WelcomeView',
+      component: WelcomeView
+    },
+    {
+      path: '/TermsAndConditions',
+      name: 'TermsAndConditions',
+      component: TermsAndConditions
+    },
+    
+    {
+      path: '/register',
       name: 'registro',
       component: RegisterView
     },
@@ -48,7 +61,7 @@ const router = createRouter({
 
 router.beforeEach((to, from, next) => {
   let isLogged = false;
-  const routesFree = ['login', 'registro'];
+  const routesFree = ['login', 'registro','TermsAndConditions','WelcomeView'];
 
   if (isLogged && to.name !== 'login') next();
   if (!isLogged && routesFree.includes(to?.name || 'login')) next();
@@ -62,5 +75,6 @@ router.beforeEach((to, from, next) => {
       path: '/login',
     })
   }
+
 })
 export default router
