@@ -6,7 +6,6 @@ import UserView from '../views/UserView.vue'
 import RegisterView from '../views/RegisterView.vue'
 import { nextTick } from 'vue'
 import WelcomeViewVue from '@/views/WelcomeView.vue'
-
 const router = createRouter({
   history: createWebHistory(import.meta.env.BASE_URL),
   routes: [
@@ -54,7 +53,7 @@ const router = createRouter({
 
 router.beforeEach((to, from, next) => {
   let isLogged = false;
-  const routesFree = ['login', 'registro','Welcome'];
+  const routesFree = ['login', 'registro', 'Welcome'];
 
   if (isLogged && to.name !== 'login') next();
   if (!isLogged && routesFree.includes(to?.name || 'login')) next();
@@ -68,5 +67,6 @@ router.beforeEach((to, from, next) => {
       path: '/login',
     })
   }
+
 })
 export default router

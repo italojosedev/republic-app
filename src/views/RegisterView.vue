@@ -9,6 +9,7 @@
             <q-input
               class="style-input"
               outlined
+              :rules="[(val) => val.length > 0 || 'Campo Vazio']"
               v-model="state.republicName"
               label="Nome da Republica"
               @focus="clearErrorRegister"
@@ -16,6 +17,7 @@
             <q-input
               class="style-input"
               outlined
+              :rules="[(val) => val.length > 0 || 'Campo Vazio']"
               v-model="state.description"
               label="Descrição"
               @focus="clearErrorRegister"
@@ -25,14 +27,17 @@
               name="email"
               class="style-input"
               outlined
+              :rules="[(val) => val.length > 0 || 'Campo Vazio']"
               v-model="state.email"
               label="Email"
               @focus="clearErrorRegister"
             />
             <q-input
               type="password"
+              mask="################"
               class="style-input"
               outlined
+              :rules="[(val) => val.length >= 8 || 'Mínimo 8 caracteres']"
               v-model="state.password"
               label="Senha"
               @focus="clearErrorRegister"
@@ -43,6 +48,7 @@
             <q-input
               class="style-input"
               outlined
+              :rules="[(val) => val.length > 0 || 'Campo Vazio']"
               v-model="state.firstName"
               label="Primeiro Nome"
               @focus="clearErrorRegister"
@@ -50,6 +56,7 @@
             <q-input
               class="style-input"
               outlined
+              :rules="[(val) => val.length > 0 || 'Campo Vazio']"
               v-model="state.lastName"
               label="Sobrenome"
               @focus="clearErrorRegister"
@@ -59,13 +66,12 @@
               class="style-input"
               outlined
               mask="(##) ##### - ####"
+              :rules="[(val) => val.length >= 17 || 'Campo Incompleto']"
               v-model="state.phofe"
               label="Telefone"
               @focus="clearErrorRegister"
             />
-            <span v-if="state.showErrorRegister" class="erroRegister"
-              >Verifique os Dados!</span
-            >
+            <span class="erroRegister" v-html="state.result"></span>
           </div>
         </div>
         <div class="container-b">
@@ -74,7 +80,6 @@
               key="btn_size_round_lg"
               rounded
               color="primary"
-              size=""
               label="Cadastro"
               class="estilo-btn"
               @click="submitRegister"
@@ -88,9 +93,9 @@
   </div>
 </template>
 <script lang="ts">
-import { reactive, ref } from "vue";
-import axios from "axios";
+import { reactive } from "vue";
 import { register } from "@/services/registerService";
+import { useRouter } from "vue-router";
 export default {
   setup() {
     const state = reactive({
@@ -101,10 +106,10 @@ export default {
       phofe: "",
       email: "",
       password: "",
-      showErrorRegister: false,
+      result: "",
     });
+    const router = useRouter()
     async function submitRegister() {
-      validateRegister();
       const data = {
         republic: {
           name: state.republicName,
@@ -120,24 +125,25 @@ export default {
       };
       const response = await register(data);
       console.log(response);
-    }
-    function validateRegister() {
-      if (
-        state.password.length < 8 ||
-        state.password.length > 16 ||
-        state.republicName == "" ||
-        state.description == "" ||
-        state.firstName == "" ||
-        state.lastName == "" ||
-        state.email == "" ||
-        state.email.indexOf("@") == -1 ||
-        state.email.indexOf(".") == -1
-      ) {
-        state.showErrorRegister = true;
+      validateRegister(response);
+
+      function validateRegister(response: any) {
+        if (state.email.indexOf("@") == -1 || state.email.indexOf(".") == -1) {
+          state.result = "Usuario Inválido";
+        } else if (response.message != "") {
+          state.result = response.message;
+        }
+        if (response.republic.actived == true) {
+          router.push({
+            name: 'Welcome',
+            params: { republicName: state.republicName },
+          });
+        }
       }
     }
+
     function clearErrorRegister() {
-      state.showErrorRegister = false;
+      state.result = "";
     }
     return {
       state,
@@ -151,6 +157,11 @@ export default {
 /*@media (min-width: 1024px) {*/
 .style-cad {
   color: #ffffff;
+}
+.estilo-btn {
+  width: 282px !important;
+  height: 60px !important;
+  margin-top: 14px;
 }
 .style-log {
   width: 179px;
@@ -167,39 +178,34 @@ export default {
   text-decoration: none;
 }
 .style-input {
-  margin: 0px 60px 35px 60px;
-  width: 290px !important;
-  height: 45px !important;
+  margin: 0px 60px 20px 60px;
+  width: 100% !important;
 }
 
 .bloco-form {
   width: 300px;
-  height: 290px;
+  height: auto;
   display: flex;
   flex-direction: column;
   align-items: center;
 }
 .bloco-b {
   border: 1px solid #aab4c1;
-  width: 1px;
-  height: 259px;
-  margin: 5px 20px 3px 20px;
+  height: 345px;
+  margin: 0px 20px 0px 20px;
 }
 
 .container-a {
   display: flex;
   flex-direction: row;
   width: 700px;
-  height: 289px;
+  height: auto;
   justify-content: center;
 }
 .container-b {
   display: flex;
   flex-direction: column;
-  width: 700px;
-  height: 160px;
   align-items: center;
-  margin-top: 30px;
 }
 
 .root {
@@ -229,7 +235,7 @@ export default {
 }
 .q-card {
   width: 948px;
-  height: 630px;
+  height: auto;
   background: #ffffff;
   border: 1px solid rgba(0, 0, 0, 0.1);
   box-shadow: 10px 4px 4px rgb(0 0 0 / 25%);
@@ -252,3 +258,4 @@ export default {
   align-content: stretch;
 }
 </style>
+
