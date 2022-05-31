@@ -7,8 +7,7 @@ import RegisterView from '../views/RegisterView.vue'
 import WelcomeView from '../views/WelcomeView.vue'
 import TermsAndConditions from '../views/TermsAndConditions.vue'
 import { nextTick } from 'vue'
-
-
+import WelcomeViewVue from '@/views/WelcomeView.vue'
 const router = createRouter({
   history: createWebHistory(import.meta.env.BASE_URL),
   routes: [
@@ -76,5 +75,6 @@ router.beforeEach((to, from, next) => {
       path: '/login',
     })
   }
+
 })
 export default router

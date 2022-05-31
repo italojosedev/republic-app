@@ -7,6 +7,7 @@
         <q-input
           type="email"
           name="email"
+          :rules="[(val) => val.length > 0 || 'Campo Vazio']"
           outlined
           v-model="state.email"
           label="Email"
@@ -16,14 +17,17 @@
         <q-input
           type="password"
           outlined
+          mask="################"
+          :rules="[(val) => val.length >= 8 || 'Mínimo 8 caracteres']"
           v-model="state.password"
           label="Senha"
           class="estilo-input"
           @focus="clearErrorLogin"
         />
         <span v-if="state.showErrorLogin" class="erroLogin"
-          >Senha ou email incorreto!</span
+          >Senha ou Email Incorreto!</span
         >
+        <span class="erroLogin" v-html="state.result"></span>
         <q-btn
           key="btn_size_round_lg"
           rounded
@@ -55,6 +59,7 @@ export default {
       email: "",
       password: "",
       showErrorLogin: false,
+      result: "",
     });
     async function submitLogin() {
       validate();
@@ -63,7 +68,8 @@ export default {
         password: state.password,
       };
       const response = await Login(data);
-      console.log(response);
+      state.result = response.message;
+      console.log(state.result);
     }
 
     function validate() {
@@ -79,6 +85,7 @@ export default {
     }
     function clearErrorLogin() {
       state.showErrorLogin = false;
+      state.result = "";
     }
     return {
       state,
@@ -89,11 +96,11 @@ export default {
 };
 </script>
 
-<style>
+<style scoped>
 @media (min-width: 450px) {
   .tamanho-login {
     width: 428px !important;
-    height: 550px !important;
+    height: auto !important;
   }
   .text-h4 {
     display: flex !important;
@@ -119,12 +126,12 @@ export default {
     margin: 45px;
   }
   .estilo-input {
-    margin: 0px 60px 35px 60px;
-    width: 290px;
-    height: 46px;
+    width: 80%;
+    height: auto;
+    margin-bottom: 20px;
   }
   .estilo-btn {
-    width: 282px !important;
+    width: 80% !important;
     height: 60px !important;
     margin-top: 14px;
   }
