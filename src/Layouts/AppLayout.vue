@@ -41,7 +41,7 @@ export default {
   },
   setup() {
     const leftDrawerOpen = ref(false);
-    const isLogged = false;
+    const isLogged = true;
 
     function toggleLeftDrawer() {
       leftDrawerOpen.value = !leftDrawerOpen.value;

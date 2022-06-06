@@ -60,7 +60,7 @@ const router = createRouter({
 })
 
 router.beforeEach((to, from, next) => {
-  let isLogged = false;
+  let isLogged = true;
   const routesFree = ['login', 'registro','TermsAndConditions','WelcomeView'];
 
   if (isLogged && to.name !== 'login') next();

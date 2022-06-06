@@ -15,6 +15,7 @@
           @focus="clearErrorLogin"
         />
         <q-input
+          required
           type="password"
           outlined
           mask="################"
@@ -29,6 +30,7 @@
         >
         <span class="erroLogin" v-html="state.result"></span>
         <q-btn
+          required
           key="btn_size_round_lg"
           rounded
           color="primary"
@@ -69,7 +71,7 @@ export default {
       };
       const response = await Login(data);
       state.result = response.message;
-      console.log(state.result);
+      console.log(response);
     }
 
     function validate() {

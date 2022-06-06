@@ -12,3 +12,12 @@ export type UserRegister = {
     phone: String,
     password: String
 }
+
+export type User = {
+    firstName: String,
+    lastName: String,
+    rent: String,
+    email: String,
+    phone: String,
+    isadmin: boolean,
+}
